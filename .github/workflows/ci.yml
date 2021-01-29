@@ -1,0 +1,25 @@
+name: CI
+on: [pull_request]
+
+jobs:
+  build:
+    name: Build, lint, and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - uses: bahmutov/npm-install@v1
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Check types
+        run: yarn tsc --noEmit
+
+      - name: Test
+        run: yarn test --ci --coverage --maxWorkers=2
+        env:
+          TEST_ACCOUNT_PRIVATE_KEY: ${{ secrets.TEST_ACCOUNT_PRIVATE_KEY }}
