@@ -1,6 +1,6 @@
 import { string as VarString } from 'protocol-buffers-encodings';
 
-import { logger } from '../../logger';
+import { baseLogger } from '../../logger';
 
 import { UVarInt } from './VarInt';
 
@@ -65,7 +65,7 @@ export const encodeTime = (value: string | Date) => {
 };
 
 export const convertObjectToSignBytes = (obj: any) => {
-  logger.extend('convertObjectToSignBytes')('Called with: %j', obj);
+  baseLogger.extend('convertObjectToSignBytes')('Called with: %j', obj);
   return Buffer.from(JSON.stringify(sortObject(obj)));
 };
 

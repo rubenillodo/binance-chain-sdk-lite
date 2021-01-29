@@ -1,3 +1,3 @@
 import debug from 'debug';
 
-export const logger = debug('binance-chain-sdk-lite');
+export const baseLogger = debug('binance-chain-sdk-lite');

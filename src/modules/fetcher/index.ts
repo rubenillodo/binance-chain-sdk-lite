@@ -1,6 +1,8 @@
 import originalFetch from 'isomorphic-unfetch';
 
-import { logger } from '../logger';
+import { baseLogger } from '../logger';
+
+const logger = baseLogger.extend('fetch');
 
 const fetch = async <SuccessResponse extends unknown, ErrorResponse extends unknown = string>(
   url: Parameters<typeof originalFetch>[0],
@@ -17,7 +19,7 @@ const fetch = async <SuccessResponse extends unknown, ErrorResponse extends unkn
     },
   };
 
-  logger.extend('fetch')('Will call "%s" with: %O', url, options);
+  logger('Will call "%s" with: %j', url, options);
   const result = await originalFetch(url, options);
 
   const response = await (async () => {
@@ -28,6 +30,7 @@ const fetch = async <SuccessResponse extends unknown, ErrorResponse extends unkn
       return str;
     }
   })();
+  logger('Response received: %j', response);
 
   if (!result.ok) {
     return { ok: false, status: result.status, response: response?.message ?? response };
