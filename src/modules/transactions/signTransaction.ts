@@ -1,6 +1,5 @@
 import { SHA256, enc } from 'crypto-js';
 import tinySecp256k1 from 'tiny-secp256k1';
-import bech32 from 'bech32';
 
 import { getPublicKeyFromPrivateKey } from '../accounts';
 import type { BinanceSdkContext } from '../context';
@@ -8,6 +7,7 @@ import { AminoPrefix, convertObjectToSignBytes, encodeNumber, marshalBinary } fr
 import { buildEc } from '../elliptic';
 
 import type { BinanceSdkRawTransaction } from './createRawTransactionTransfer';
+import { decodeAddress } from '../addresses';
 
 export const signTransaction = async ({
   context,
@@ -91,9 +91,4 @@ const generateSignature = ({
   const msgHash = SHA256(enc.Hex.parse(data)).toString();
   const msgHashHex = Buffer.from(msgHash, 'hex');
   return tinySecp256k1.sign(msgHashHex, privateKey);
-};
-
-const decodeAddress = ({ address }: { address: string }): Buffer => {
-  const decodeAddress = bech32.decode(address);
-  return Buffer.from(bech32.fromWords(decodeAddress.words));
 };

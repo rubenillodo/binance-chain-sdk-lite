@@ -28,3 +28,8 @@ export const isAddressValid = ({
     return false;
   }
 };
+
+export const decodeAddress = ({ address }: { address: string }): Buffer => {
+  const decodeAddress = decode(address);
+  return Buffer.from(fromWords(decodeAddress.words));
+};
